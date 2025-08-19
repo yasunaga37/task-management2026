@@ -1,8 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,21 +28,24 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// レスポンスのコンテンツタイプおよびエンコーディング方式を指定
-		response.setContentType("text/html; charset=UTF-8");
-
-		// レスポンス書き出し用オブジェクトの取得
-		PrintWriter pw = response.getWriter();
-
-		// レスポンスの書き出し
-		pw.println("<!DOCTYPE html><html>");
-		pw.println("<head><title>テスト</title></head>");
-		pw.println("<body>");
-		pw.println("テスト用サーブレット<br>");
-		pw.println("タコピだよ～ン<br>");
-		pw.println();
-		pw.println("</body></html>");
-
+//		// レスポンスのコンテンツタイプおよびエンコーディング方式を指定
+//		response.setContentType("text/html; charset=UTF-8");
+//
+//		// レスポンス書き出し用オブジェクトの取得
+//		PrintWriter pw = response.getWriter();
+//
+//		// レスポンスの書き出し
+//		pw.println("<!DOCTYPE html><html>");
+//		pw.println("<head><title>テスト</title></head>");
+//		pw.println("<body>");
+//		pw.println("テスト用サーブレット<br>");
+//		pw.println("タコピだよ～ン<br>");
+//		pw.println();
+//		pw.println("</body></html>");
+		
+		String path = "WEB-INF/view/login.jsp";
+		RequestDispatcher rd = request.getRequestDispatcher(path);
+		rd.forward(request, response);
 	}
 
 	/**
