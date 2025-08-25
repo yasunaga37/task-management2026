@@ -22,7 +22,7 @@ public class UserDAO {
 			
 			if (res.next()) {
 				User user = new User();
-				user.setUserId(userId);
+				user.setId(userId);
 				user.setPassword(password);
 				return user;
 			}
