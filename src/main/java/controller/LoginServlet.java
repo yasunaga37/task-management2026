@@ -24,74 +24,98 @@ import util.LoginCheck;
 @WebServlet("/index.html")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public LoginServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 初回アクセス時はログインjspへ遷移する
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String path = "WEB-INF/view/login.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
 
 	/**
+	 * ユーザーIDとパスワードからログイン認証を行い、
+	 * 認証成功の場合はタスクリストページへ遷移する
+	 * 認証失敗の場合はログイン認証ページへ遷移する
 	 * @throws IOException 
 	 * @throws ServletException 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		request.setCharacterEncoding("UTF-8");
-		User loginUser = login(request, response);
-		String path = gotoTaskListPage(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		//		request.setCharacterEncoding("UTF-8");
+		String path = null;
+		if (login(request, response)) {
+			path = gotoTaskListPage(request, response);
+		} else {
+			path = "WEB-INF/view/login.jsp";
+		}
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
-	
+
 	/**
-	 * ユーザーIDとパスワードからログイン認証を行う
+	 * ユーザーIDとパスワードからログイン認証を行い、
+	 * 認証後にログインユーザーをセッションスコープに保存する。
 	 * @param request
 	 * @param response
 	 * @return User ログイン中のユーザー
 	 */
-	private User login(HttpServletRequest request, HttpServletResponse response)  {
+	private boolean login(HttpServletRequest request, HttpServletResponse response) {
 		String user_id = request.getParameter("user_id");
 		String password = request.getParameter("password");
 		System.out.println(user_id + " " + password);
-		
+		boolean loggedIn = false;
+
 		UserDAO dao = new UserDAO();
 		User loginUser = null;
 		try {
 			loginUser = dao.login(user_id, password);
-			System.out.println(loginUser.getId());
-			HttpSession session = request.getSession();
-			session.setAttribute("login_user", loginUser);
+			if (loginUser != null) {
+				System.out.println(loginUser.getId());
+				HttpSession session = request.getSession();
+				session.setAttribute("login_user", loginUser);
+				loggedIn = true;
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		return loginUser;
+		return loggedIn;
 	}
-	
-	public String gotoTaskListPage(HttpServletRequest request, HttpServletResponse response)  {
+
+	/**
+	 * ログインユーザーの有無を確認する。
+	 * ログインユーザー有の場合はタスクリストページへ遷移する
+	 * ログインユーザー無しの場合はログイン認証ページへ遷移する
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	public String gotoTaskListPage(HttpServletRequest request, HttpServletResponse response) {
 		String path = null;
 		if (LoginCheck.loginCheck(request, response)) {
 			TaskDAO tDao = new TaskDAO();
 			try {
 				List<Task> list = tDao.selectAll();
 				request.setAttribute("task_list", list);
-				path = "WEB-INF/view/task_list.jsp";		
+				path = "WEB-INF/view/task_list.jsp";
 			} catch (ClassNotFoundException | SQLException e) {
-				path = "WEB-INF/view/login.jsp";		
+				System.out.println("タスクリストの取得に失敗しました。");
 				e.printStackTrace();
 			}
 		} else {
+			path = "WEB-INF/view/login.jsp";
 			System.out.println("ログイン中のユーザーはいません。");
 		}
 		return path;
