@@ -12,6 +12,12 @@ import model.entity.Task;
 
 public class TaskDAO {
 	
+	/**
+	 * タスクリストページ表示用の全タスクリストを取得する
+	 * @return List<Task>
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public List<Task> selectAll() throws ClassNotFoundException, SQLException {
 		List<Task> list = new ArrayList<Task>();
 		String sql = "SELECT"
@@ -51,7 +57,7 @@ public class TaskDAO {
 				list.add(task);
 			}
 		} 
-		System.out.println(list.size());
+//		System.out.println(list.size());
 		return list;
 	}
 

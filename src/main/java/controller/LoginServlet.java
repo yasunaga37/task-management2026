@@ -58,8 +58,10 @@ public class LoginServlet extends HttpServlet {
 		String path = null;
 		if (login(request, response)) {
 			path = gotoTaskListPage(request, response);
+			request.setAttribute("loginSuccess", "ログインしました");
 		} else {
 			path = "WEB-INF/view/login.jsp";
+			request.setAttribute("loginFailure", "パスワード認証に失敗しました。");
 		}
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
@@ -75,7 +77,7 @@ public class LoginServlet extends HttpServlet {
 	private boolean login(HttpServletRequest request, HttpServletResponse response) {
 		String user_id = request.getParameter("user_id");
 		String password = request.getParameter("password");
-		System.out.println(user_id + " " + password);
+//		System.out.println(user_id + " " + password);
 		boolean loggedIn = false;
 
 		UserDAO dao = new UserDAO();
