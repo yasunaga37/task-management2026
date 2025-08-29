@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/*
+bootstrap5 を使ってチェックボックとスクロールバー付きのテーブルを作成
+https://qiita.com/nagato0614/items/d2624637fe7188b97f5c
+*/
+.scroll-container {
+	/* テーブル全体のサイズ */
+	height: 400px;
+	overflow-y: scroll;
+	border: 1px solid #dee2e6;
+}
+
+.scroll-container::-webkit-scrollbar {
+	width: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
