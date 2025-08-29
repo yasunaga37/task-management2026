@@ -21,6 +21,7 @@ public class TaskDAO {
 	public List<Task> selectAll() throws ClassNotFoundException, SQLException {
 		List<Task> list = new ArrayList<Task>();
 		String sql = "SELECT"
+				+ "  t.task_id, "
 				+ "  t.task_name, "
 				+ "  c.category_name,"
 				+ "  u.user_name,"
@@ -34,7 +35,8 @@ public class TaskDAO {
 				+ "  INNER JOIN m_user u "
 				+ "    ON t.user_id = u.user_id "
 				+ "  INNER JOIN m_status s "
-				+ "    ON t.status_code = s.status_code ";
+				+ "    ON t.status_code = s.status_code "
+				+ "  ORDER BY t.task_id";
 		try (Connection con = ConnectionManager.getConnection();
 				Statement stmt = con.createStatement()) {
 			ResultSet res = stmt.executeQuery(sql);
