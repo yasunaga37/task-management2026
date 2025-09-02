@@ -5,14 +5,14 @@
 
 <c:import url="layout.jsp">
 	<c:param name="content">
-		<h3>task_list</h3>
 
 		<%-- 		<fmt:formatNumber value="1000" pattern="#,##0" /><br>
 		<fmt:formatDate value="<%=new Date() %>" pattern="yyyy年MM月dd日  EE曜日  HH時mm分ss秒"/> --%>
 
 		<c:if test="${loginSuccess != null}">
-			<div id="success" class="alert alert-success text-center" role="alert">
+			<div id="success" class="alert alert-success alert-dismissible fade show text-center" role="alert">
 				<c:out value="${loginSuccess}" />
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		</c:if>
 

@@ -39,7 +39,16 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = "WEB-INF/view/login.jsp";
+		String path = null;
+		String action = (String) request.getParameter("action");
+		System.out.println("action:" + action);
+
+		if (action == null || "login".equals(action)) {
+//			System.out.println(action + "   LOGIN!!!!!!!!!!!!!!!!!!!!!");
+			path = "WEB-INF/view/login.jsp";
+		}  else if ("logout".equals(action)) {
+			path = logout(request, response);
+		}
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
@@ -56,7 +65,9 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		//		request.setCharacterEncoding("UTF-8");
 		String path = null;
-		if (login(request, response)) {
+		String action = request.getParameter("action");	    
+		System.out.println("action:" + action);
+		if ("login".equals(action) && login(request, response)) {
 			path = gotoTaskListPage(request, response);
 			request.setAttribute("loginSuccess", "ログインしました");
 		} else {
@@ -85,7 +96,7 @@ public class LoginServlet extends HttpServlet {
 		try {
 			loginUser = dao.login(user_id, password);
 			if (loginUser != null) {
-				System.out.println(loginUser.getId());
+//				System.out.println(loginUser.getId());
 				HttpSession session = request.getSession();
 				session.setAttribute("login_user", loginUser);
 				loggedIn = true;
@@ -121,6 +132,19 @@ public class LoginServlet extends HttpServlet {
 			System.out.println("ログイン中のユーザーはいません。");
 		}
 		return path;
+	}
+	
+	/**
+	 * セッションスコープを廃棄してログアウトページへ遷移する。
+	 * @param request
+	 * @param response
+	 * @return String logout.jsp
+	 */
+	private String logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		session.invalidate();
+		request.setAttribute("logout", "logout");
+		return "WEB-INF/view/logout.jsp";
 	}
 
 }

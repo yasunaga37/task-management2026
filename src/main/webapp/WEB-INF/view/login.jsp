@@ -25,7 +25,7 @@
 			</div>
 			
 			<div class="d-grid gap-2">
-				<button type="submit" class="btn btn-primary" type="button">ログイン</button>
+				<button type="submit" class="btn btn-primary" type="button" name="action" value="login">ログイン</button>
 			</div>
 			
 		</form>
