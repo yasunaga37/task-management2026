@@ -23,17 +23,20 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="task-list?user_id=all">タスク一覧</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
 					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-						aria-expanded="false"> Dropdown </a>
+						aria-expanded="false">ユーザー別タスク</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Action</a></li>
-							<li><a class="dropdown-item" href="#">Another action</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Something else here</a></li>
+							<li><a class="dropdown-item" href="task-list?user_id=all">すべてのユーザー</a></li>
+							<c:forEach var="user" items="${user_list }">
+								<li><a class="dropdown-item" href="task-list?user_id=${user.id}">${user.name }</a></li>
+							</c:forEach>
 						</ul></li>
 					<li class="nav-item"><a class="nav-link disabled">Disabled</a></li>
+					<c:if test="${login_user != null }">
+						<li class="nav-item"><a class="nav-link disabled"><c:out value="${ login_user.name}"/></a></li>
+					</c:if>
 				</ul>
 				<form class="d-flex" role="search">
 					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

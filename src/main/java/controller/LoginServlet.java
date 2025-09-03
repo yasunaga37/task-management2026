@@ -12,11 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.dao.TaskDAO;
 import model.dao.UserDAO;
-import model.entity.Task;
 import model.entity.User;
-import util.LoginCheck;
 
 /**
  * Servlet implementation class LoginServlet
@@ -34,17 +31,18 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	/**
-	 * 初回アクセス時はログインjspへ遷移する
+	 * action == null: 初回アクセス時はログインjspへ遷移する
+	 * "login".equals(action): ログアウトページのダイアログから「ログイン」ボタン押下時はログインjspへ遷移する
+	 * "logout".equals(action): タスク一覧ページのダイアログから「ログアウト」ボタン押下時はログアウトjspへ遷移する
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = null;
 		String action = (String) request.getParameter("action");
-		System.out.println("action:" + action);
-
+//		System.out.println("action:" + action);
 		if (action == null || "login".equals(action)) {
-//			System.out.println(action + "   LOGIN!!!!!!!!!!!!!!!!!!!!!");
 			path = "WEB-INF/view/login.jsp";
 		}  else if ("logout".equals(action)) {
 			path = logout(request, response);
@@ -66,10 +64,9 @@ public class LoginServlet extends HttpServlet {
 		//		request.setCharacterEncoding("UTF-8");
 		String path = null;
 		String action = request.getParameter("action");	    
-		System.out.println("action:" + action);
 		if ("login".equals(action) && login(request, response)) {
-			path = gotoTaskListPage(request, response);
-			request.setAttribute("loginSuccess", "ログインしました");
+			path = "task-list";
+			request.setAttribute("action", "login");
 		} else {
 			path = "WEB-INF/view/login.jsp";
 			request.setAttribute("loginFailure", "パスワード認証に失敗しました。");
@@ -88,17 +85,16 @@ public class LoginServlet extends HttpServlet {
 	private boolean login(HttpServletRequest request, HttpServletResponse response) {
 		String user_id = request.getParameter("user_id");
 		String password = request.getParameter("password");
-//		System.out.println(user_id + " " + password);
 		boolean loggedIn = false;
 
 		UserDAO dao = new UserDAO();
-		User loginUser = null;
 		try {
-			loginUser = dao.login(user_id, password);
-			if (loginUser != null) {
-//				System.out.println(loginUser.getId());
+			if (dao.login(user_id, password)) {
+				User loginUser = dao.searchById(user_id);
+				List<User> list = dao.selectAll();
 				HttpSession session = request.getSession();
 				session.setAttribute("login_user", loginUser);
+				session.setAttribute("user_list", list);
 				loggedIn = true;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -107,33 +103,6 @@ public class LoginServlet extends HttpServlet {
 		return loggedIn;
 	}
 
-	/**
-	 * ログインユーザーの有無を確認する。
-	 * ログインユーザー有の場合はタスクリストページへ遷移する
-	 * ログインユーザー無しの場合はログイン認証ページへ遷移する
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	public String gotoTaskListPage(HttpServletRequest request, HttpServletResponse response) {
-		String path = null;
-		if (LoginCheck.loginCheck(request, response)) {
-			TaskDAO tDao = new TaskDAO();
-			try {
-				List<Task> list = tDao.selectAll();
-				request.setAttribute("task_list", list);
-				path = "WEB-INF/view/task_list.jsp";
-			} catch (ClassNotFoundException | SQLException e) {
-				System.out.println("タスクリストの取得に失敗しました。");
-				e.printStackTrace();
-			}
-		} else {
-			path = "WEB-INF/view/login.jsp";
-			System.out.println("ログイン中のユーザーはいません。");
-		}
-		return path;
-	}
-	
 	/**
 	 * セッションスコープを廃棄してログアウトページへ遷移する。
 	 * @param request
