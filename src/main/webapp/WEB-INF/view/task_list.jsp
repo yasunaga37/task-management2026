@@ -11,7 +11,8 @@
 
 		<c:if test="${loginSuccess != null}">
 			<div id="success" class="alert alert-success alert-dismissible fade show text-center" role="alert">
-				<c:out value="${loginSuccess}" />
+				<c:set var="msg">${login_user.name}　様が${loginSuccess}。</c:set>
+				<c:out value="${msg}" />
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		</c:if>
