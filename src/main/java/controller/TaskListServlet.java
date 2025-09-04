@@ -31,21 +31,36 @@ public class TaskListServlet extends HttpServlet {
     }
 
 	/**
+	 * ナビゲーションバーの「ユーザー別タスク」「状況」のプルダウンメニューの選択による処理の分岐を行う。
+	 * ・「ユーザー別タスク」「状況」のプルダウンで「すべて」が選択された場合
+	 * すべてのタスクを表示する。
+	 * ・「ユーザー別タスク」のプルダウンで特定のユーザーが選択された場合
+	 * 該当ユーザーの担当タスクが表示される。
+	 *  ・「状況」のプルダウンで「すべて」以外が選択された場合
+	 *  該当状況のタスクが表示される。
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter("user_id");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		String path = null;
-		if ("all".equals(userId)) {
+		String action = request.getParameter("action");
+	
+		if ("all".equals(action)) {
 			path = gotoTaskListPage(request, response);
-		} else {
+		} else if ("user".equals(action)) {
+			String userId = request.getParameter("user_id");
 			path = gotoTaskListPageByUserId(userId, request, response);
-		}
+		} else if ("status".equals(action)) {
+			String statusCode = request.getParameter("status_code");
+			path = gotoTaskListPageByStatusCode(statusCode, request, response);
+		}		
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
 
 	/**
+	 * LoginServlet#doPostメソッドからログイン認証後に遷移される
+	 * task_list.jspへと移動して、すべてのタスクを表示させる。
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -86,12 +101,47 @@ public class TaskListServlet extends HttpServlet {
 		return path;
 	}
 	
+	/**
+	 * ナビゲーションバーの「ユーザー別タスク」のプルダウンで特定のユーザーが選択された場合
+	 * 送信されたユーザーIDから該当ユーザーが担当するタスク一覧を取得し、task_list.jspへ移動する。
+	 * @param userId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	public String gotoTaskListPageByUserId(String userId, HttpServletRequest request, HttpServletResponse response) {
 		String path = null;
 		if (LoginCheck.loginCheck(request, response)) {
 			TaskDAO tDao = new TaskDAO();
 			try {
 				List<Task> list = tDao.searchTaskByUserId(userId);
+				request.setAttribute("task_list", list);
+				path = "WEB-INF/view/task_list.jsp";
+			} catch (ClassNotFoundException | SQLException e) {
+				System.out.println("タスクリストの取得に失敗しました。");
+				e.printStackTrace();
+			}
+		} else {
+			path = "WEB-INF/view/login.jsp";
+			System.out.println("ログイン中のユーザーはいません。");
+		}
+		return path;
+	}
+	
+	/**
+	 * ナビゲーションバーの「状況」のプルダウンで「すべて」以外が選択された場合
+	 * 送信されたステータスコードから該当状況のタスク一覧を取得し、task_list.jspへ移動する。
+	 * @param statusCode
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	public String gotoTaskListPageByStatusCode(String statusCode, HttpServletRequest request, HttpServletResponse response) {
+		String path = null;
+		if (LoginCheck.loginCheck(request, response)) {
+			TaskDAO tDao = new TaskDAO();
+			try {
+				List<Task> list = tDao.searchTaskByStatusCode(statusCode);
 				request.setAttribute("task_list", list);
 				path = "WEB-INF/view/task_list.jsp";
 			} catch (ClassNotFoundException | SQLException e) {

@@ -24,7 +24,7 @@
 						<th scope="col">タスク名</th>
 						<th scope="col">カテゴリ名</th>
 						<th scope="col">ユーザー名</th>
-						<th scope="col">状態</th>
+						<th scope="col">状況</th>
 						<th scope="col">期限</th>
 						<th scope="col"></th>
 					</tr>
