@@ -23,19 +23,30 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active" aria-current="page" href="task-list?user_id=all">タスク一覧</a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="task-list?action=all">タスク一覧</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+
 					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false">ユーザー別タスク</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="task-list?user_id=all">すべてのユーザー</a></li>
+							<li><a class="dropdown-item" href="task-list?action=all">すべてのユーザー</a></li>
 							<c:forEach var="user" items="${user_list }">
-								<li><a class="dropdown-item" href="task-list?user_id=${user.id}">${user.name }</a></li>
+								<li><a class="dropdown-item" href="task-list?action=user&user_id=${user.id}">${user.name }</a></li>
 							</c:forEach>
 						</ul></li>
-					<li class="nav-item"><a class="nav-link disabled">Disabled</a></li>
+
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+						aria-expanded="false">状況</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="task-list?action=all">すべて</a></li>
+							<c:forEach var="status" items="${status_list}">
+								<li><a class="dropdown-item" href="task-list?action=status&status_code=${status.code}">${status.name }</a></li>
+							</c:forEach>
+						</ul></li>
+
+					<li class="nav-item"><a class="nav-link disabled">新規タスク登録</a></li>
 					<c:if test="${login_user != null }">
-						<li class="nav-item"><a class="nav-link disabled"><c:out value="${ login_user.name}"/></a></li>
+						<li class="nav-item"><a class="nav-link active"><c:out value="${ login_user.name}" /></a></li>
 					</c:if>
 				</ul>
 				<form class="d-flex" role="search">
@@ -70,7 +81,7 @@
 		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
 	<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<form id="modalForm" action="index.html" method="get">
 				<div class="modal-content">
@@ -87,8 +98,9 @@
 							</div>
 						</c:when>
 						<c:otherwise>
-							<div class="modal-body">ログアウトしてもよろしいですか？	
-<!-- 							<input type="hidden" class="form-control"  name="action" value="logout"> -->
+							<div class="modal-body">
+								ログアウトしてもよろしいですか？
+								<!-- 							<input type="hidden" class="form-control"  name="action" value="logout"> -->
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
