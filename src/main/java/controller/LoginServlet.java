@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.CategoryDAO;
 import model.dao.StatusDAO;
 import model.dao.UserDAO;
+import model.entity.Category;
 import model.entity.Status;
 import model.entity.User;
 
@@ -91,15 +93,18 @@ public class LoginServlet extends HttpServlet {
 
 		UserDAO userDao = new UserDAO();
 		StatusDAO statusDao = new StatusDAO();
+		CategoryDAO categoryDAO = new CategoryDAO();
 		try {
 			if (userDao.login(user_id, password)) {
 				User loginUser = userDao.searchById(user_id);
 				List<User> uList = userDao.selectAll();
 				List<Status> sList = statusDao.selectAll();
+				List<Category> cList = categoryDAO.selectAll();
 				HttpSession session = request.getSession();
 				session.setAttribute("login_user", loginUser);
 				session.setAttribute("user_list", uList);
 				session.setAttribute("status_list", sList);
+				session.setAttribute("category_list", cList);
 				loggedIn = true;
 			}
 		} catch (ClassNotFoundException | SQLException e) {

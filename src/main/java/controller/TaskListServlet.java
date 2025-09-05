@@ -34,10 +34,18 @@ public class TaskListServlet extends HttpServlet {
 	 * ナビゲーションバーの「ユーザー別タスク」「状況」のプルダウンメニューの選択による処理の分岐を行う。
 	 * ・「ユーザー別タスク」「状況」のプルダウンで「すべて」が選択された場合
 	 * すべてのタスクを表示する。
+	 * 
 	 * ・「ユーザー別タスク」のプルダウンで特定のユーザーが選択された場合
 	 * 該当ユーザーの担当タスクが表示される。
+	 * 
 	 *  ・「状況」のプルダウンで「すべて」以外が選択された場合
 	 *  該当状況のタスクが表示される。
+	 *  
+	 *  ・「カテゴリ」のプルダウンで「すべて」以外が選択された場合
+	 *  該当カテゴリのタスクが表示される。
+	 *  
+	 *  ・「期限」の▲▼が選択された場合
+	 *  期限をキーにして並び替えたタスク一覧が表示される。
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
@@ -52,7 +60,16 @@ public class TaskListServlet extends HttpServlet {
 		} else if ("status".equals(action)) {
 			String statusCode = request.getParameter("status_code");
 			path = gotoTaskListPageByStatusCode(statusCode, request, response);
-		}		
+		} else if ("category".equals(action)) {
+			int categoryId = Integer.parseInt(request.getParameter("category_id"));
+			path = gotoTaskListPageByCategoryCode(categoryId, request, response);
+		} else if ("asc".equals(action)) {
+			path = gotoTaskListPageOrderByLimitDate("asc", request, response);
+		} else if ("desc".equals(action)) {
+			path = gotoTaskListPageOrderByLimitDate("desc", request, response);
+		} else {
+			// do nothing
+		}
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
@@ -134,7 +151,7 @@ public class TaskListServlet extends HttpServlet {
 	 * @param statusCode
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return String 遷移先URL
 	 */
 	public String gotoTaskListPageByStatusCode(String statusCode, HttpServletRequest request, HttpServletResponse response) {
 		String path = null;
@@ -154,5 +171,64 @@ public class TaskListServlet extends HttpServlet {
 		}
 		return path;
 	}
+	
+	/**
+	 * ナビゲーションバーの「カテゴリ」のプルダウンで「すべて」以外が選択された場合
+	 * 送信されたステータスコードから該当状況のタスク一覧を取得し、task_list.jspへ移動する。
+	 * @param categoryId
+	 * @param request
+	 * @param response
+	 * @return String 遷移先URL
+	 */
+	public String gotoTaskListPageByCategoryCode(int categoryId, HttpServletRequest request, HttpServletResponse response) {
+		String path = null;
+		if (LoginCheck.loginCheck(request, response)) {
+			TaskDAO tDao = new TaskDAO();
+			try {
+				List<Task> list = tDao.searchTaskByCategoryId(categoryId);
+				request.setAttribute("task_list", list);
+				path = "WEB-INF/view/task_list.jsp";
+			} catch (ClassNotFoundException | SQLException e) {
+				System.out.println("タスクリストの取得に失敗しました。");
+				e.printStackTrace();
+			}
+		} else {
+			path = "WEB-INF/view/login.jsp";
+			System.out.println("ログイン中のユーザーはいません。");
+		}
+		return path;
+	}
 
+	/**
+	 * 期限をキーにして並び替えを行う
+	 * @param order String asc:期限昇順  desc:期限降順
+	 * @param request
+	 * @param response
+	 * @return String 遷移先URL
+	 */
+	public String gotoTaskListPageOrderByLimitDate(String order, HttpServletRequest request, HttpServletResponse response) {
+		String path = null;
+		if (LoginCheck.loginCheck(request, response)) {
+			TaskDAO tDao = new TaskDAO();
+			List<Task> list = null;
+			try {				
+				if ("asc".equals(order)) {
+					list = tDao.orderByLimitDateASC();
+				} else if ("desc".equals(order)) {
+					list = tDao.orderByLimitDateDESC();
+				} else {
+					// do nothing
+				}
+				request.setAttribute("task_list", list);
+				path = "WEB-INF/view/task_list.jsp";
+			} catch (ClassNotFoundException | SQLException e) {
+				System.out.println("タスクリストの取得に失敗しました。");
+				e.printStackTrace();
+			}
+		} else {
+			path = "WEB-INF/view/login.jsp";
+			System.out.println("ログイン中のユーザーはいません。");
+		}
+		return path;
+	}
 }
