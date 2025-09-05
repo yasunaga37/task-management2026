@@ -25,7 +25,10 @@
 						<th scope="col">カテゴリ名</th>
 						<th scope="col">ユーザー名</th>
 						<th scope="col">状況</th>
-						<th scope="col">期限</th>
+						<th scope="col">
+							期限&nbsp;<a href="task-list?action=asc" class="text-decoration-none">▲</a>
+											<a href="task-list?action=desc" class="text-decoration-none">▼</a>
+						</th>
 						<th scope="col"></th>
 					</tr>
 				</thead>

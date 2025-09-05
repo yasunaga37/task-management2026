@@ -23,11 +23,20 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active" aria-current="page" href="task-list?action=all">タスク一覧</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="task-list?action=all">タスク一覧</a></li>					
+<!-- 					<li class="nav-item"><a class="nav-link" href="#">Link</a></li> -->
 
 					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-						aria-expanded="false">ユーザー別タスク</a>
+						aria-expanded="false">カテゴリ</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="task-list?action=all">すべてのカテゴリ</a></li>
+							<c:forEach var="category" items="${category_list}">
+								<li><a class="dropdown-item" href="task-list?action=category&category_id=${category.id}">${category.name }</a></li>
+							</c:forEach>
+						</ul></li>
+
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+						aria-expanded="false">ユーザー</a>
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="task-list?action=all">すべてのユーザー</a></li>
 							<c:forEach var="user" items="${user_list }">
