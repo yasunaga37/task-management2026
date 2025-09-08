@@ -52,24 +52,52 @@ public class TaskListServlet extends HttpServlet {
 		String path = null;
 		String action = request.getParameter("action");
 	
-		if ("all".equals(action)) {
+//		if ("all".equals(action)) {
+//			path = gotoTaskListPage(request, response);
+//		} else if ("user".equals(action)) {
+//			String userId = request.getParameter("user_id");
+//			path = gotoTaskListPageByUserId(userId, request, response);
+//		} else if ("status".equals(action)) {
+//			String statusCode = request.getParameter("status_code");
+//			path = gotoTaskListPageByStatusCode(statusCode, request, response);
+//		} else if ("category".equals(action)) {
+//			int categoryId = Integer.parseInt(request.getParameter("category_id"));
+//			path = gotoTaskListPageByCategoryCode(categoryId, request, response);
+//		} else if ("asc".equals(action)) {
+//			path = gotoTaskListPageOrderByLimitDate("asc", request, response);
+//		} else if ("desc".equals(action)) {
+//			path = gotoTaskListPageOrderByLimitDate("desc", request, response);
+//		} else {
+//			// do nothing
+//		}
+		
+		switch(action){
+		case "all":
 			path = gotoTaskListPage(request, response);
-		} else if ("user".equals(action)) {
+			break;
+		case "user":
 			String userId = request.getParameter("user_id");
 			path = gotoTaskListPageByUserId(userId, request, response);
-		} else if ("status".equals(action)) {
+			break;
+		case "status":
 			String statusCode = request.getParameter("status_code");
 			path = gotoTaskListPageByStatusCode(statusCode, request, response);
-		} else if ("category".equals(action)) {
+			break;
+		case "category":
 			int categoryId = Integer.parseInt(request.getParameter("category_id"));
 			path = gotoTaskListPageByCategoryCode(categoryId, request, response);
-		} else if ("asc".equals(action)) {
+			break;
+		case "asc":
 			path = gotoTaskListPageOrderByLimitDate("asc", request, response);
-		} else if ("desc".equals(action)) {
+			break;
+		case "desc":
 			path = gotoTaskListPageOrderByLimitDate("desc", request, response);
-		} else {
-			// do nothing
+			break;
+		default:
+			break;	
 		}
+		
+		
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
@@ -81,12 +109,7 @@ public class TaskListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = (String) request.getAttribute("action");
-		String path = null;
-		if ("login".equals(action)) {
-			path = gotoTaskListPage(request, response);
-			request.setAttribute("loginSuccess", "ログインしました");
-		}
+		String path = gotoTaskListPage(request, response);
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}

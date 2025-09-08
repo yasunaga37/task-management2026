@@ -7,6 +7,8 @@
 	<c:param name="content">
 	
 	<h3>ログアウトしました。</h3>
+	<%-- リクエストスコープにaction属性の値として"login"を設定 --%>
+	<c:set var="action" value="login" scope="request" />
 	
 	</c:param>
 </c:import>
