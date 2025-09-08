@@ -35,6 +35,11 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	/**
+	 * actionの値 => null：初回アクセス時
+	 * actionの値 => login：login.jspの「ログイン」ボタンが押された時
+	 * actionの値 => login：ダイアログの「ログイン」ボタンが押された時
+	 * actionの値 => logout：ダイアログの「ログアウト」ボタンが押された時
+	 * 
 	 * action == null: 初回アクセス時はログインjspへ遷移する
 	 * "login".equals(action): ログアウトページのダイアログから「ログイン」ボタン押下時はログインjspへ遷移する
 	 * "logout".equals(action): タスク一覧ページのダイアログから「ログアウト」ボタン押下時はログアウトjspへ遷移する
@@ -70,7 +75,6 @@ public class LoginServlet extends HttpServlet {
 		String action = request.getParameter("action");	    
 		if ("login".equals(action) && login(request, response)) {
 			path = "task-list";
-			request.setAttribute("action", "login");
 		} else {
 			path = "WEB-INF/view/login.jsp";
 			request.setAttribute("loginFailure", "パスワード認証に失敗しました。");
@@ -122,7 +126,6 @@ public class LoginServlet extends HttpServlet {
 	private String logout(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		session.invalidate();
-		request.setAttribute("logout", "logout");
 		return "WEB-INF/view/logout.jsp";
 	}
 
