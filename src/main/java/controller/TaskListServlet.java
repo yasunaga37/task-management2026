@@ -51,26 +51,7 @@ public class TaskListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		String path = null;
 		String action = request.getParameter("action");
-	
-//		if ("all".equals(action)) {
-//			path = gotoTaskListPage(request, response);
-//		} else if ("user".equals(action)) {
-//			String userId = request.getParameter("user_id");
-//			path = gotoTaskListPageByUserId(userId, request, response);
-//		} else if ("status".equals(action)) {
-//			String statusCode = request.getParameter("status_code");
-//			path = gotoTaskListPageByStatusCode(statusCode, request, response);
-//		} else if ("category".equals(action)) {
-//			int categoryId = Integer.parseInt(request.getParameter("category_id"));
-//			path = gotoTaskListPageByCategoryCode(categoryId, request, response);
-//		} else if ("asc".equals(action)) {
-//			path = gotoTaskListPageOrderByLimitDate("asc", request, response);
-//		} else if ("desc".equals(action)) {
-//			path = gotoTaskListPageOrderByLimitDate("desc", request, response);
-//		} else {
-//			// do nothing
-//		}
-		
+
 		switch(action){
 		case "all":
 			path = gotoTaskListPage(request, response);
@@ -96,7 +77,6 @@ public class TaskListServlet extends HttpServlet {
 		default:
 			break;	
 		}
-		
 		
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
