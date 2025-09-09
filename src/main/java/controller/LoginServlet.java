@@ -101,6 +101,7 @@ public class LoginServlet extends HttpServlet {
 		try {
 			if (userDao.login(user_id, password)) {
 				User loginUser = userDao.searchById(user_id);
+				request.setAttribute("loginSuccess", "ログインしました。");
 				List<User> uList = userDao.selectAll();
 				List<Status> sList = statusDao.selectAll();
 				List<Category> cList = categoryDAO.selectAll();
