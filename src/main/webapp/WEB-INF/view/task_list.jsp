@@ -25,25 +25,35 @@
 						<th scope="col">カテゴリ名</th>
 						<th scope="col">ユーザー名</th>
 						<th scope="col">状況</th>
-						<th scope="col">
-							期限&nbsp;<a href="task-list?action=asc" class="text-decoration-none">▲</a>
-											<a href="task-list?action=desc" class="text-decoration-none">▼</a>
+						<th scope="col">期限&nbsp;<a href="task-list?action=asc" class="text-decoration-none">▲</a> <a
+							href="task-list?action=desc" class="text-decoration-none">▼</a>
 						</th>
 						<th scope="col"></th>
 					</tr>
 				</thead>
 				<tbody class="table-group-divider">
-					<c:forEach var="task" items="${task_list}">
-						<tr>
-							<th scope="row"><c:out value="${task.name }" />
-							</td>
-							<td><c:out value="${task.categoryName}" /></td>
-							<td><c:out value="${task.userName }" /></td>
-							<td><c:out value="${task.statuName }" /></td>
-							<td><fmt:formatDate value="${task.limitDate }" pattern="yyyy年MM月dd日" /></td>
-							<td><a href="task-detail?task_id=${task.id }">詳細</a></td>
-						</tr>
-					</c:forEach>
+					<c:choose>
+						<c:when test="${fn:length(task_list) == 0 }">
+							<tr>
+								<td colspan="6" class="text-center">登録されているタスクはありません。</td>
+							</tr>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="task" items="${task_list}">
+								<c:if test="${task.deleteFlag == 0 }">
+									<tr>
+										<th scope="row"><c:out value="${task.name }" />
+										</td>
+										<td><c:out value="${task.categoryName}" /></td>
+										<td><c:out value="${task.userName }" /></td>
+										<td><c:out value="${task.statuName }" /></td>
+										<td><fmt:formatDate value="${task.limitDate }" pattern="yyyy年MM月dd日" /></td>
+										<td><a href="task-detail?task_id=${task.id }">詳細</a></td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 			</table>
 		</div>
