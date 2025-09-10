@@ -27,9 +27,9 @@ public class TaskDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("TaskDetailServlet#doGet()");
+//		System.out.println("TaskDetailServlet#doGet()");
 		String task_id = request.getParameter("task_id");
-		System.out.println(task_id);
+//		System.out.println(task_id);
 	}
 
 	/**
