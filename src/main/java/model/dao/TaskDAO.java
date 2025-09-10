@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -324,6 +325,58 @@ public class TaskDAO {
 			}
 		}
 		return list;
+	}
+	
+	public Task searchTaskByTaskId (int taskId) throws ClassNotFoundException, SQLException {
+		Task task = new Task();
+		String sql = "SELECT"
+				+ "  t.task_id, "
+				+ "  t.task_name, "
+				+ "  c.category_name,"
+				+ "  u.user_name,"
+				+ "  s.status_name,"
+				+ "  t.limit_date,"
+				+ "  t.memo, "
+				+ "  t.delete_flag, "
+				+ "  t.create_datetime, "
+				+ "  t.update_datetime "
+				+ "FROM t_task t "
+				+ "  INNER JOIN m_category c "
+				+ "    ON t.category_id = c.category_id "
+				+ "  INNER JOIN m_user u "
+				+ "    ON t.user_id = u.user_id "
+				+ "  INNER JOIN m_status s "
+				+ "    ON t.status_code = s.status_code "
+				+ "  WHERE t.task_id = ?";
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, taskId);
+			ResultSet res = pstmt.executeQuery();
+			if (res.next()) {
+				int task_id = res.getInt("task_id");
+				String task_name = res.getString("task_name");
+				String category_name = res.getString("category_name");
+				String user_name = res.getString("user_name");
+				String status_name = res.getString("status_name");
+				Date limit_date = res.getDate("limit_date");
+				String memo = res.getString("memo");
+				String delete_flag = res.getString("delete_flag");
+				Timestamp create_datetime = res.getTimestamp("create_datetime");
+				Timestamp update_datetime = res.getTimestamp("update_datetime");
+
+				task.setId(task_id);
+				task.setName(task_name);
+				task.setCategoryName(category_name);
+				task.setUserName(user_name);
+				task.setStatuName(status_name);
+				task.setLimitDate(limit_date);
+				task.setMemo(memo);
+				task.setDeleteFlag(delete_flag);
+				task.setCreateDatetime(create_datetime);
+				task.setUpdateDatetime(update_datetime);
+			}
+		}
+		return task;		
 	}
 
 }
