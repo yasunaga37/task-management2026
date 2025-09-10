@@ -42,6 +42,7 @@ public class TaskDAO {
 				Statement stmt = con.createStatement()) {
 			ResultSet res = stmt.executeQuery(sql);
 			while (res.next()) {
+				int task_id = res.getInt("task_id");
 				String task_name = res.getString("task_name");
 				String category_name = res.getString("category_name");
 				String user_name = res.getString("user_name");
@@ -51,6 +52,7 @@ public class TaskDAO {
 				String delete_flag = res.getString("delete_flag");
 
 				Task task = new Task();
+				task.setId(task_id);
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);

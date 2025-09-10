@@ -41,7 +41,7 @@
 							<td><c:out value="${task.userName }" /></td>
 							<td><c:out value="${task.statuName }" /></td>
 							<td><fmt:formatDate value="${task.limitDate }" pattern="yyyy年MM月dd日" /></td>
-							<td><a href="">詳細</a></td>
+							<td><a href="task-detail?task_id=${task.id }">詳細</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
