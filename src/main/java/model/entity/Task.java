@@ -1,7 +1,7 @@
 package model.entity;
 
-import java.security.Timestamp;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Task {
 	private int id;
@@ -12,14 +12,14 @@ public class Task {
 	private String statuName;
 	private String memo;
 	private String deleteFlag;
-	private Timestamp createDatatime;
-	private Timestamp updateDatatime;
+	private Timestamp createDatetime;
+	private Timestamp updateDatetime;
 
 	public Task() {
 	}
 
 	public Task(int id, String name, String categoryName, Date limitDate, String userName, String statuName,
-			String memo, String deleteFlag, Timestamp createDatatime, Timestamp updateDatatime) {
+			String memo, String deleteFlag, Timestamp createDatetime, Timestamp updateDatetime) {
 		this.id = id;
 		this.name = name;
 		this.categoryName = categoryName;
@@ -28,8 +28,8 @@ public class Task {
 		this.statuName = statuName;
 		this.memo = memo;
 		this.deleteFlag = deleteFlag;
-		this.createDatatime = createDatatime;
-		this.updateDatatime = updateDatatime;
+		this.createDatetime = createDatetime;
+		this.updateDatetime = updateDatetime;
 	}
 
 	public int getId() {
@@ -96,20 +96,20 @@ public class Task {
 		this.deleteFlag = deleteFlag;
 	}
 
-	public Timestamp getCreateDatatime() {
-		return createDatatime;
+	public Timestamp getCreateDatetime() {
+		return createDatetime;
 	}
 
-	public void setCreateDatatime(Timestamp createDatatime) {
-		this.createDatatime = createDatatime;
+	public void setCreateDatetime(java.sql.Timestamp create_datetime) {
+		this.createDatetime = create_datetime;
 	}
 
-	public Timestamp getUpdateDatatime() {
-		return updateDatatime;
+	public Timestamp getUpdateDatetime() {
+		return updateDatetime;
 	}
 
-	public void setUpdateDatatime(Timestamp updateDatatime) {
-		this.updateDatatime = updateDatatime;
+	public void setUpdateDatetime(Timestamp updateDatetime) {
+		this.updateDatetime = updateDatetime;
 	}
 
 }
