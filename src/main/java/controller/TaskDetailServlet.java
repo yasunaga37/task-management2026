@@ -29,6 +29,7 @@ public class TaskDetailServlet extends HttpServlet {
     }
 
 	/**
+	 * タスクIDを元に該当タスクを取得し、タスク情報詳細ページへ遷移する
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,20 +49,27 @@ public class TaskDetailServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	/**
+	 * タスクIDを元に該当タスクを取得し、遷移先URL(タスク情報詳細ページ)を戻す。
+	 * @param task_id
+	 * @param request
+	 * @param response
+	 * @return String 遷移先URL(タスク情報詳細ページ)
+	 */
 	private String gotoTaskDetailPageByTaskId (int task_id, HttpServletRequest request, HttpServletResponse response) {
 		TaskDAO dao = new TaskDAO();
 		try {
 			Task task = dao.searchTaskByTaskId(task_id);
-			System.out.println("task_id:" + task.getId() + ", ");
-			System.out.println("task_name:" + task.getName() + ", ");
-			System.out.println("category_name:" + task.getCategoryName() + ", ");
-			System.out.println("user_name:" + task.getUserName() + ", ");
-			System.out.println("status_name:" + task.getStatuName()+ ", ");
-			System.out.println("limit_date:" + task.getLimitDate() + ", ");			
-			System.out.println( "memo:" + task.getMemo() + ", " );
-			System.out.println("delete_flag:" + task.getDeleteFlag()+ ", ");
-			System.out.println("create_datetime:" + task.getCreateDatetime() + ", ");
-			System.out.println("update_datetime:" + task.getUpdateDatetime() + ", ");
+//			System.out.println("task_id:" + task.getId() + ", ");
+//			System.out.println("task_name:" + task.getName() + ", ");
+//			System.out.println("category_name:" + task.getCategoryName() + ", ");
+//			System.out.println("user_name:" + task.getUserName() + ", ");
+//			System.out.println("status_name:" + task.getStatusName()+ ", ");
+//			System.out.println("limit_date:" + task.getLimitDate() + ", ");			
+//			System.out.println( "memo:" + task.getMemo() + ", " );
+//			System.out.println("delete_flag:" + task.getDeleteFlag()+ ", ");
+//			System.out.println("create_datetime:" + task.getCreateDatetime() + ", ");
+//			System.out.println("update_datetime:" + task.getUpdateDatetime() + ", ");
 			request.setAttribute("task", task);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

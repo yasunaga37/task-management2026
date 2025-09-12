@@ -42,11 +42,10 @@
 							<c:forEach var="task" items="${task_list}">
 								<c:if test="${task.deleteFlag == 0 }">
 									<tr>
-										<th scope="row"><c:out value="${task.name }" />
-										</td>
+										<th scope="row"><c:out value="${task.name }" />	</th>
 										<td><c:out value="${task.categoryName}" /></td>
 										<td><c:out value="${task.userName }" /></td>
-										<td><c:out value="${task.statuName }" /></td>
+										<td><c:out value="${task.statusName }" /></td>
 										<td><fmt:formatDate value="${task.limitDate }" pattern="yyyy年MM月dd日" /></td>
 										<td><a href="task-detail?task_id=${task.id }">詳細</a></td>
 									</tr>
