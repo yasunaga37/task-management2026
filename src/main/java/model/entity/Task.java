@@ -9,7 +9,7 @@ public class Task {
 	private String categoryName;
 	private Date limitDate;
 	private String userName;
-	private String statuName;
+	private String statusName;
 	private String memo;
 	private String deleteFlag;
 	private Timestamp createDatetime;
@@ -18,14 +18,14 @@ public class Task {
 	public Task() {
 	}
 
-	public Task(int id, String name, String categoryName, Date limitDate, String userName, String statuName,
+	public Task(int id, String name, String categoryName, Date limitDate, String userName, String statusName,
 			String memo, String deleteFlag, Timestamp createDatetime, Timestamp updateDatetime) {
 		this.id = id;
 		this.name = name;
 		this.categoryName = categoryName;
 		this.limitDate = limitDate;
 		this.userName = userName;
-		this.statuName = statuName;
+		this.statusName = statusName;
 		this.memo = memo;
 		this.deleteFlag = deleteFlag;
 		this.createDatetime = createDatetime;
@@ -72,12 +72,12 @@ public class Task {
 		this.userName = userName;
 	}
 
-	public String getStatuName() {
-		return statuName;
+	public String getStatusName() {
+		return statusName;
 	}
 
-	public void setStatuName(String statuName) {
-		this.statuName = statuName;
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 
 	public String getMemo() {

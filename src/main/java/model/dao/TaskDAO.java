@@ -57,7 +57,7 @@ public class TaskDAO {
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);
-				task.setStatuName(status_name);
+				task.setStatusName(status_name);
 				task.setLimitDate(limit_date);
 				task.setDeleteFlag(delete_flag);
 				list.add(task);
@@ -98,6 +98,7 @@ public class TaskDAO {
 			pstmt.setString(1, userId);
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
+				int task_id = res.getInt("task_id");
 				String task_name = res.getString("task_name");
 				String category_name = res.getString("category_name");
 				String user_name = res.getString("user_name");
@@ -107,10 +108,11 @@ public class TaskDAO {
 				String delete_flag = res.getString("delete_flag");
 
 				Task task = new Task();
+				task.setId(task_id);
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);
-				task.setStatuName(status_name);
+				task.setStatusName(status_name);
 				task.setLimitDate(limit_date);
 				task.setDeleteFlag(delete_flag);
 				list.add(task);
@@ -152,6 +154,7 @@ public class TaskDAO {
 			pstmt.setString(1, statusCode);
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
+				int task_id = res.getInt("task_id");
 				String task_name = res.getString("task_name");
 				String category_name = res.getString("category_name");
 				String user_name = res.getString("user_name");
@@ -161,10 +164,11 @@ public class TaskDAO {
 				String delete_flag = res.getString("delete_flag");
 
 				Task task = new Task();
+				task.setId(task_id);
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);
-				task.setStatuName(status_name);
+				task.setStatusName(status_name);
 				task.setLimitDate(limit_date);
 				task.setDeleteFlag(delete_flag);
 				list.add(task);
@@ -205,6 +209,7 @@ public class TaskDAO {
 			pstmt.setInt(1, categoryId);
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
+				int task_id = res.getInt("task_id");
 				String task_name = res.getString("task_name");
 				String category_name = res.getString("category_name");
 				String user_name = res.getString("user_name");
@@ -214,10 +219,11 @@ public class TaskDAO {
 				String delete_flag = res.getString("delete_flag");
 
 				Task task = new Task();
+				task.setId(task_id);
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);
-				task.setStatuName(status_name);
+				task.setStatusName(status_name);
 				task.setLimitDate(limit_date);
 				task.setDeleteFlag(delete_flag);
 				list.add(task);
@@ -256,6 +262,7 @@ public class TaskDAO {
 				PreparedStatement pstmt = con.prepareStatement(sql)) {
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
+				int task_id = res.getInt("task_id");
 				String task_name = res.getString("task_name");
 				String category_name = res.getString("category_name");
 				String user_name = res.getString("user_name");
@@ -265,10 +272,11 @@ public class TaskDAO {
 				String delete_flag = res.getString("delete_flag");
 
 				Task task = new Task();
+				task.setId(task_id);
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);
-				task.setStatuName(status_name);
+				task.setStatusName(status_name);
 				task.setLimitDate(limit_date);
 				task.setDeleteFlag(delete_flag);
 				list.add(task);
@@ -306,6 +314,7 @@ public class TaskDAO {
 				PreparedStatement pstmt = con.prepareStatement(sql)) {
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
+				int task_id = res.getInt("task_id");
 				String task_name = res.getString("task_name");
 				String category_name = res.getString("category_name");
 				String user_name = res.getString("user_name");
@@ -315,10 +324,11 @@ public class TaskDAO {
 				String delete_flag = res.getString("delete_flag");
 
 				Task task = new Task();
+				task.setId(task_id);
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);
-				task.setStatuName(status_name);
+				task.setStatusName(status_name);
 				task.setLimitDate(limit_date);
 				task.setDeleteFlag(delete_flag);
 				list.add(task);
@@ -327,6 +337,13 @@ public class TaskDAO {
 		return list;
 	}
 	
+	/**
+	 * タスクIDをキーにして該当タスク一情報を取得する
+	 * @param taskId
+	 * @return Task
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public Task searchTaskByTaskId (int taskId) throws ClassNotFoundException, SQLException {
 		Task task = new Task();
 		String sql = "SELECT"
@@ -368,7 +385,7 @@ public class TaskDAO {
 				task.setName(task_name);
 				task.setCategoryName(category_name);
 				task.setUserName(user_name);
-				task.setStatuName(status_name);
+				task.setStatusName(status_name);
 				task.setLimitDate(limit_date);
 				task.setMemo(memo);
 				task.setDeleteFlag(delete_flag);

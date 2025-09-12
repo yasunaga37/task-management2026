@@ -14,18 +14,18 @@
 
 <body>
 	<%-- ナビゲーションバー --%>
-	<nav class="sticky-top navbar navbar-expand-lg bg-body-tertiary mb-5">
+	<nav class="sticky-top navbar navbar-expand-lg bg-body-tertiary mb-2">
 		<div class="container-fluid">
-		<img alt="ロゴ" src="img/tasklogo.png" class="mx-2">
-			<a class="navbar-brand" data-bs-toggle="modal" data-bs-target="#myModal" href="#">タスク管理システム</a>
+			<img alt="ロゴ" src="img/tasklogo.png" class="mx-2"> <a class="navbar-brand" data-bs-toggle="modal"
+				data-bs-target="#myModal" href="#">タスク管理システム</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active" aria-current="page" href="task-list?action=all">タスク一覧</a></li>					
-<!-- 					<li class="nav-item"><a class="nav-link" href="#">Link</a></li> -->
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="task-list?action=all">タスク一覧</a></li>
+					<!-- 					<li class="nav-item"><a class="nav-link" href="#">Link</a></li> -->
 
 					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false">カテゴリ</a>
@@ -69,11 +69,11 @@
 	<%-- ナビゲーションバー --%>
 
 	<div class="container">
-		<div class="row">
+<!-- 		<div class="row"> -->
 			<%-- メインコンテンツ --%>
 			<div id="content">${param.content}</div>
 			<%-- メインコンテンツ --%>
-		</div>
+<!-- 		</div> -->
 	</div>
 
 	<%-- フッター --%>
@@ -96,7 +96,7 @@
 			<form id="modalForm" action="index.html" method="get">
 				<div class="modal-content">
 					<div class="modal-header">
-<!-- 						<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
+						<!-- 						<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<c:choose>
@@ -104,14 +104,14 @@
 							<div class="modal-body">ログインしますか？</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-								<button type="submit" class="btn btn-primary name=" action" value="login">ログイン</button>
+								<button type="submit" class="btn btn-primary" name="action" value="login">ログイン</button>
 							</div>
 						</c:when>
-						
+
 						<c:when test="${action == null}">
 							<div class="modal-body">
-							ログアウトしてもよろしいですか？
-<!-- 							<input type="hidden" class="form-control"  name="action" value="logout"> -->
+								ログアウトしてもよろしいですか？
+								<!-- 							<input type="hidden" class="form-control"  name="action" value="logout"> -->
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
