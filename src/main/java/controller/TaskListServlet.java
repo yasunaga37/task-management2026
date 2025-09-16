@@ -21,14 +21,14 @@ import util.LoginCheck;
 @WebServlet("/task-list")
 public class TaskListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TaskListServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public TaskListServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * ナビゲーションバーの「ユーザー別タスク」「状況」のプルダウンメニューの選択による処理の分岐を行う。
@@ -48,36 +48,40 @@ public class TaskListServlet extends HttpServlet {
 	 *  期限をキーにして並び替えたタスク一覧が表示される。
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String path = null;
-		String action = request.getParameter("action");
-
-		switch(action){
-		case "all":
-			path = gotoTaskListPage(request, response);
-			break;
-		case "user":
-			String userId = request.getParameter("user_id");
-			path = gotoTaskListPageByUserId(userId, request, response);
-			break;
-		case "status":
-			String statusCode = request.getParameter("status_code");
-			path = gotoTaskListPageByStatusCode(statusCode, request, response);
-			break;
-		case "category":
-			int categoryId = Integer.parseInt(request.getParameter("category_id"));
-			path = gotoTaskListPageByCategoryCode(categoryId, request, response);
-			break;
-		case "asc":
-			path = gotoTaskListPageOrderByLimitDate("asc", request, response);
-			break;
-		case "desc":
-			path = gotoTaskListPageOrderByLimitDate("desc", request, response);
-			break;
-		default:
-			break;	
+		if (LoginCheck.loginCheck(request, response)) {
+			String action = request.getParameter("action");
+			switch (action) {
+			case "all":
+				path = gotoTaskListPage(request, response);
+				break;
+			case "user":
+				String userId = request.getParameter("user_id");
+				path = gotoTaskListPageByUserId(userId, request, response);
+				break;
+			case "status":
+				String statusCode = request.getParameter("status_code");
+				path = gotoTaskListPageByStatusCode(statusCode, request, response);
+				break;
+			case "category":
+				int categoryId = Integer.parseInt(request.getParameter("category_id"));
+				path = gotoTaskListPageByCategoryCode(categoryId, request, response);
+				break;
+			case "asc":
+				path = gotoTaskListPageOrderByLimitDate("asc", request, response);
+				break;
+			case "desc":
+				path = gotoTaskListPageOrderByLimitDate("desc", request, response);
+				break;
+			default:
+				break;
+			}
+		} else {
+			path = "WEB-INF/view/login.jsp";
+			System.out.println("ログイン中のユーザーはいません。");
 		}
-		
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
@@ -88,12 +92,19 @@ public class TaskListServlet extends HttpServlet {
 	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String path = gotoTaskListPage(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String path = null;
+		if (LoginCheck.loginCheck(request, response)) {
+			path = gotoTaskListPage(request, response);
+		} else {
+			path = "WEB-INF/view/login.jsp";
+			System.out.println("ログイン中のユーザーはいません。");
+		}
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
-	
+
 	/**
 	 * ログインユーザーの有無を確認する。
 	 * ログインユーザー有の場合はタスクリストページへ遷移する
@@ -104,23 +115,19 @@ public class TaskListServlet extends HttpServlet {
 	 */
 	public String gotoTaskListPage(HttpServletRequest request, HttpServletResponse response) {
 		String path = null;
-		if (LoginCheck.loginCheck(request, response)) {
-			TaskDAO tDao = new TaskDAO();
-			try {
-				List<Task> list = tDao.selectAll();
-				request.setAttribute("task_list", list);
-				path = "WEB-INF/view/task_list.jsp";
-			} catch (ClassNotFoundException | SQLException e) {
-				System.out.println("タスクリストの取得に失敗しました。");
-				e.printStackTrace();
-			}
-		} else {
-			path = "WEB-INF/view/login.jsp";
-			System.out.println("ログイン中のユーザーはいません。");
+		TaskDAO tDao = new TaskDAO();
+		try {
+			List<Task> list = tDao.selectAll();
+			request.setAttribute("task_list", list);
+			path = "WEB-INF/view/task_list.jsp";
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("タスクリストの取得に失敗しました。");
+			e.printStackTrace();
+			// path = "エラーページ"(未定)
 		}
 		return path;
 	}
-	
+
 	/**
 	 * ナビゲーションバーの「ユーザー別タスク」のプルダウンで特定のユーザーが選択された場合
 	 * 送信されたユーザーIDから該当ユーザーが担当するタスク一覧を取得し、task_list.jspへ移動する。
@@ -131,23 +138,19 @@ public class TaskListServlet extends HttpServlet {
 	 */
 	public String gotoTaskListPageByUserId(String userId, HttpServletRequest request, HttpServletResponse response) {
 		String path = null;
-		if (LoginCheck.loginCheck(request, response)) {
-			TaskDAO tDao = new TaskDAO();
-			try {
-				List<Task> list = tDao.searchTaskByUserId(userId);
-				request.setAttribute("task_list", list);
-				path = "WEB-INF/view/task_list.jsp";
-			} catch (ClassNotFoundException | SQLException e) {
-				System.out.println("タスクリストの取得に失敗しました。");
-				e.printStackTrace();
-			}
-		} else {
-			path = "WEB-INF/view/login.jsp";
-			System.out.println("ログイン中のユーザーはいません。");
+		TaskDAO tDao = new TaskDAO();
+		try {
+			List<Task> list = tDao.searchTaskByUserId(userId);
+			request.setAttribute("task_list", list);
+			path = "WEB-INF/view/task_list.jsp";
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("タスクリストの取得に失敗しました。");
+			e.printStackTrace();
+			// path = "エラーページ"(未定)
 		}
 		return path;
 	}
-	
+
 	/**
 	 * ナビゲーションバーの「状況」のプルダウンで「すべて」以外が選択された場合
 	 * 送信されたステータスコードから該当状況のタスク一覧を取得し、task_list.jspへ移動する。
@@ -156,25 +159,22 @@ public class TaskListServlet extends HttpServlet {
 	 * @param response
 	 * @return String 遷移先URL
 	 */
-	public String gotoTaskListPageByStatusCode(String statusCode, HttpServletRequest request, HttpServletResponse response) {
+	public String gotoTaskListPageByStatusCode(String statusCode, HttpServletRequest request,
+			HttpServletResponse response) {
 		String path = null;
-		if (LoginCheck.loginCheck(request, response)) {
-			TaskDAO tDao = new TaskDAO();
-			try {
-				List<Task> list = tDao.searchTaskByStatusCode(statusCode);
-				request.setAttribute("task_list", list);
-				path = "WEB-INF/view/task_list.jsp";
-			} catch (ClassNotFoundException | SQLException e) {
-				System.out.println("タスクリストの取得に失敗しました。");
-				e.printStackTrace();
-			}
-		} else {
-			path = "WEB-INF/view/login.jsp";
-			System.out.println("ログイン中のユーザーはいません。");
+		TaskDAO tDao = new TaskDAO();
+		try {
+			List<Task> list = tDao.searchTaskByStatusCode(statusCode);
+			request.setAttribute("task_list", list);
+			path = "WEB-INF/view/task_list.jsp";
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("タスクリストの取得に失敗しました。");
+			e.printStackTrace();
+			// path = "エラーページ"(未定)
 		}
 		return path;
 	}
-	
+
 	/**
 	 * ナビゲーションバーの「カテゴリ」のプルダウンで「すべて」以外が選択された場合
 	 * 送信されたステータスコードから該当状況のタスク一覧を取得し、task_list.jspへ移動する。
@@ -183,21 +183,18 @@ public class TaskListServlet extends HttpServlet {
 	 * @param response
 	 * @return String 遷移先URL
 	 */
-	public String gotoTaskListPageByCategoryCode(int categoryId, HttpServletRequest request, HttpServletResponse response) {
+	public String gotoTaskListPageByCategoryCode(int categoryId, HttpServletRequest request,
+			HttpServletResponse response) {
 		String path = null;
-		if (LoginCheck.loginCheck(request, response)) {
-			TaskDAO tDao = new TaskDAO();
-			try {
-				List<Task> list = tDao.searchTaskByCategoryId(categoryId);
-				request.setAttribute("task_list", list);
-				path = "WEB-INF/view/task_list.jsp";
-			} catch (ClassNotFoundException | SQLException e) {
-				System.out.println("タスクリストの取得に失敗しました。");
-				e.printStackTrace();
-			}
-		} else {
-			path = "WEB-INF/view/login.jsp";
-			System.out.println("ログイン中のユーザーはいません。");
+		TaskDAO tDao = new TaskDAO();
+		try {
+			List<Task> list = tDao.searchTaskByCategoryId(categoryId);
+			request.setAttribute("task_list", list);
+			path = "WEB-INF/view/task_list.jsp";
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("タスクリストの取得に失敗しました。");
+			e.printStackTrace();
+			// path = "エラーページ"(未定)
 		}
 		return path;
 	}
@@ -209,28 +206,25 @@ public class TaskListServlet extends HttpServlet {
 	 * @param response
 	 * @return String 遷移先URL
 	 */
-	public String gotoTaskListPageOrderByLimitDate(String order, HttpServletRequest request, HttpServletResponse response) {
+	public String gotoTaskListPageOrderByLimitDate(String order, HttpServletRequest request,
+			HttpServletResponse response) {
 		String path = null;
-		if (LoginCheck.loginCheck(request, response)) {
-			TaskDAO tDao = new TaskDAO();
-			List<Task> list = null;
-			try {				
-				if ("asc".equals(order)) {
-					list = tDao.orderByLimitDateASC();
-				} else if ("desc".equals(order)) {
-					list = tDao.orderByLimitDateDESC();
-				} else {
-					// do nothing
-				}
-				request.setAttribute("task_list", list);
-				path = "WEB-INF/view/task_list.jsp";
-			} catch (ClassNotFoundException | SQLException e) {
-				System.out.println("タスクリストの取得に失敗しました。");
-				e.printStackTrace();
+		TaskDAO tDao = new TaskDAO();
+		List<Task> list = null;
+		try {
+			if ("asc".equals(order)) {
+				list = tDao.orderByLimitDateASC();
+			} else if ("desc".equals(order)) {
+				list = tDao.orderByLimitDateDESC();
+			} else {
+				// do nothing
 			}
-		} else {
-			path = "WEB-INF/view/login.jsp";
-			System.out.println("ログイン中のユーザーはいません。");
+			request.setAttribute("task_list", list);
+			path = "WEB-INF/view/task_list.jsp";
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("タスクリストの取得に失敗しました。");
+			e.printStackTrace();
+			// path = "エラーページ"(未定)
 		}
 		return path;
 	}
