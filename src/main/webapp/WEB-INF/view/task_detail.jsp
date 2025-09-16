@@ -5,16 +5,12 @@
 
 <c:import url="layout.jsp">
 	<c:param name="content">
-		<%-- 		<h3>タスク詳細</h3>
-		${task.id }<br>
-		${task.name }<br> --%>
 
 		<div class="row align-items-start">
-			<div class="col bg-success p-1 text-dark bg-opacity-10 m-1">
-				<%-- 				<div class="d-flex justify-content-center">
-					<h7>タスク番号：<c:out value="${task.id}"/></h7>
-				</div> --%>
 
+			<%-- 1列目 --%>
+			<div class="col bg-success p-1 text-dark bg-opacity-10 m-1">
+				<form action="task-detail" method="post">
 					<table class="table table-striped  table-bordered  table-layout-fixed">
 						<thead class="table-active">
 							<tr>
@@ -22,7 +18,6 @@
 								<th scope="col"><c:out value="${task.id}" /></th>
 								<th scope="col" style="width: 90px;">カテゴリ</th>
 								<th scope="col"><c:out value="${task.categoryName}" /></th>
-							</tr>
 							</tr>
 						</thead>
 						<tbody>
@@ -57,15 +52,18 @@
 						</tbody>
 					</table>
 
-				<div class="d-flex justify-content-center">
-					<button type="submit" class="btn btn-primary me-5" name="action" value="task_edit">編集</button>
-					<button type="submit" class="btn btn-danger" name="action" value="task_delete">削除</button>
-				</div>
-
-
+					<div class="d-flex justify-content-center">
+					<input type="hidden" name="task_id" value="${task.id}">
+						<button type="submit" class="btn btn-primary me-5" name="action" value="task_edit">編集</button>
+						<button type="submit" class="btn btn-danger" name="action" value="task_delete">削除</button>
+					</div>
+				</form>
 			</div>
+			<%-- 1列目終わり --%>
 
+			<%-- 2列目 --%>
 			<div class="col bg-success p-1 text-dark bg-opacity-10 m-1">2列目</div>
+			<%-- 2列目終わり --%>
 		</div>
 
 	</c:param>

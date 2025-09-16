@@ -16,8 +16,8 @@
 	<%-- ナビゲーションバー --%>
 	<nav class="sticky-top navbar navbar-expand-lg bg-body-tertiary mb-2">
 		<div class="container-fluid">
-			<img alt="ロゴ" src="img/tasklogo.png" class="mx-2"> <a class="navbar-brand" data-bs-toggle="modal"
-				data-bs-target="#myModal" href="#">タスク管理システム</a>
+			<img alt="ロゴ" src="img/tasklogo.png" class="mx-2"> 
+			<a class="navbar-brand" data-bs-toggle="modal" 	data-bs-target="#myModal" href="#">タスク管理システム</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
