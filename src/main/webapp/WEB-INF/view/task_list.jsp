@@ -9,10 +9,19 @@
 		<%-- 		<fmt:formatNumber value="1000" pattern="#,##0" /><br>
 		<fmt:formatDate value="<%=new Date() %>" pattern="yyyy年MM月dd日  EE曜日  HH時mm分ss秒"/> --%>
 
+		<%-- ログイン成功時のアラート --%>
 		<c:if test="${loginSuccess != null}">
 			<div id="success" class="alert alert-success alert-dismissible fade show text-center" role="alert">
 				<c:set var="msg">${login_user.name}　様が${loginSuccess}。</c:set>
 				<c:out value="${msg}" />
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</c:if>
+		
+		<%-- タスク削除完了時のアラート --%>
+		<c:if test="${deleteSuccess != null}">
+			<div id="success" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+				<c:out value="${deleteSuccess}" />
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		</c:if>
