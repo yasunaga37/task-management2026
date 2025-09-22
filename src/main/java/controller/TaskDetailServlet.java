@@ -48,6 +48,10 @@ public class TaskDetailServlet extends HttpServlet {
 	}
 
 	/**
+	 * タスク詳細画面からリクエストパラメータactionを受け取って処理を振り分ける。
+	 * action=task_edit：タスク情報編集画面へ
+	 * action=task_delete：タスク情報削除サーブレット#doPostへ
+	 * ログインユーザー不在の場合：ログインjspへ
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -58,7 +62,7 @@ public class TaskDetailServlet extends HttpServlet {
 			if ("task_edit".equals(action)) {
 				path = "task-edit";
 			} else if ("task_delete".equals(action)) {
-
+				path = "task-delete";
 			}
 		} else {
 			path = "WEB-INF/view/login.jsp";

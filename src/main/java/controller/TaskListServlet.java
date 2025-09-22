@@ -55,7 +55,7 @@ public class TaskListServlet extends HttpServlet {
 			String action = request.getParameter("action");
 			switch (action) {
 			case "all":
-				path = gotoTaskListPage(request, response);
+				path = LoginCheck.gotoTaskListPage(request, response);
 				break;
 			case "user":
 				String userId = request.getParameter("user_id");
@@ -96,7 +96,7 @@ public class TaskListServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String path = null;
 		if (LoginCheck.loginCheck(request, response)) {
-			path = gotoTaskListPage(request, response);
+			path = LoginCheck.gotoTaskListPage(request, response);
 		} else {
 			path = "WEB-INF/view/login.jsp";
 			System.out.println("ログイン中のユーザーはいません。");
@@ -105,28 +105,28 @@ public class TaskListServlet extends HttpServlet {
 		rd.forward(request, response);
 	}
 
-	/**
-	 * ログインユーザーの有無を確認する。
-	 * ログインユーザー有の場合はタスクリストページへ遷移する
-	 * ログインユーザー無しの場合はログイン認証ページへ遷移する
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	public String gotoTaskListPage(HttpServletRequest request, HttpServletResponse response) {
-		String path = null;
-		TaskDAO tDao = new TaskDAO();
-		try {
-			List<Task> list = tDao.selectAll();
-			request.setAttribute("task_list", list);
-			path = "WEB-INF/view/task_list.jsp";
-		} catch (ClassNotFoundException | SQLException e) {
-			System.out.println("タスクリストの取得に失敗しました。");
-			e.printStackTrace();
-			// path = "エラーページ"(未定)
-		}
-		return path;
-	}
+//	/**
+//	 * ログインユーザーの有無を確認する。
+//	 * ログインユーザー有の場合はタスクリストページへ遷移する
+//	 * ログインユーザー無しの場合はログイン認証ページへ遷移する
+//	 * @param request
+//	 * @param response
+//	 * @return
+//	 */
+//	public String gotoTaskListPage(HttpServletRequest request, HttpServletResponse response) {
+//		String path = null;
+//		TaskDAO tDao = new TaskDAO();
+//		try {
+//			List<Task> list = tDao.selectAll();
+//			request.setAttribute("task_list", list);
+//			path = "WEB-INF/view/task_list.jsp";
+//		} catch (ClassNotFoundException | SQLException e) {
+//			System.out.println("タスクリストの取得に失敗しました。");
+//			e.printStackTrace();
+//			// path = "エラーページ"(未定)
+//		}
+//		return path;
+//	}
 
 	/**
 	 * ナビゲーションバーの「ユーザー別タスク」のプルダウンで特定のユーザーが選択された場合
