@@ -430,6 +430,13 @@ public class TaskDAO {
 		return count;
 	}
 	
+	/**
+	 * 受取ったタスクIDを元に該当タスク情報を削除する
+	 * @param task_id
+	 * @return int count
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public int deleteTask(int task_id) throws ClassNotFoundException, SQLException {
 		int count = 0;
 		String sql = "UPDATE t_task "
