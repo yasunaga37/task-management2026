@@ -38,6 +38,8 @@ public class TaskDeleteServlet extends HttpServlet {
 	}
 
 	/**
+	 * タスク詳細画面から送信されたタスクIDを元に該当タスクを論理削除し。
+	 * 削除処理後はラスク一覧画面へ遷移し、削除済みタスクIDとタスク名をアラート表示する
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,24 +48,36 @@ public class TaskDeleteServlet extends HttpServlet {
 		rd.forward(request, response);
 	}
 	
+	/**
+	 * タスク詳細画面から送信されたタスクIDを元に該当タスクを論理削除し。
+	 * 削除処理後はラスク一覧画面へ遷移し、削除済みタスクIDとタスク名をアラート表示する
+	 * @param request
+	 * @param response
+	 * @return String 遷移先URL
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private String delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int task_id = Integer.parseInt(request.getParameter("task_id"));
 		TaskDAO tDao = new TaskDAO();
 		String taskName = null;
+		// タスク名を取得する
 		try {
 			Task task = tDao.searchTaskByTaskId(task_id);
 			taskName = task.getName();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		
+		// 削除処理を行う
 		int count = 0;
 		try {
 			count = tDao.deleteTask(task_id);
-//			System.out.println("count=" + count);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		
+		// 削除処理が成功した場合は、タスク一覧画面に遷移し、削除済みタスクIDとタスク名を表示する
 		String url = null;
 		if (count != 0) {
 			url = LoginCheck.gotoTaskListPage(request, response);
@@ -73,3 +87,4 @@ public class TaskDeleteServlet extends HttpServlet {
 	}
 
 }
+
