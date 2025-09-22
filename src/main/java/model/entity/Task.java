@@ -6,18 +6,19 @@ import java.sql.Timestamp;
 public class Task {
 	private int id;
 	private String name;
+	private int catagoryId;
 	private String categoryName;
 	private Date limitDate;
+	private String userId;
 	private String userName;
+	private String statusCode;
 	private String statusName;
 	private String memo;
 	private String deleteFlag;
 	private Timestamp createDatetime;
 	private Timestamp updateDatetime;
 
-	public Task() {
-	}
-
+	public Task() {}
 	public Task(int id, String name, String categoryName, Date limitDate, String userName, String statusName,
 			String memo, String deleteFlag, Timestamp createDatetime, Timestamp updateDatetime) {
 		this.id = id;
@@ -31,7 +32,37 @@ public class Task {
 		this.createDatetime = createDatetime;
 		this.updateDatetime = updateDatetime;
 	}
+	
+	public Task(int id, String name, int catagoryId, String userId, String statusCode, 
+			Date limitDate, String memo, String deleteFlag) {
+		this.id = id;
+		this.name = name;
+		this.catagoryId = catagoryId;
+		this.limitDate = limitDate;
+		this.userId = userId;
+		this.statusCode = statusCode;
+		this.memo = memo;
+		this.deleteFlag = deleteFlag;
+	}
 
+	public Task(int id, String name, int catagoryId, String categoryName, Date limitDate, String userId,
+			String userName, String statusCode, String statusName, String memo, String deleteFlag,
+			Timestamp createDatetime, Timestamp updateDatetime) {
+		this.id = id;
+		this.name = name;
+		this.catagoryId = catagoryId;
+		this.categoryName = categoryName;
+		this.limitDate = limitDate;
+		this.userId = userId;
+		this.userName = userName;
+		this.statusCode = statusCode;
+		this.statusName = statusName;
+		this.memo = memo;
+		this.deleteFlag = deleteFlag;
+		this.createDatetime = createDatetime;
+		this.updateDatetime = updateDatetime;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -110,6 +141,24 @@ public class Task {
 
 	public void setUpdateDatetime(Timestamp updateDatetime) {
 		this.updateDatetime = updateDatetime;
+	}
+	public int getCatagoryId() {
+		return catagoryId;
+	}
+	public void setCatagoryId(int catagoryId) {
+		this.catagoryId = catagoryId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
 	}
 
 }

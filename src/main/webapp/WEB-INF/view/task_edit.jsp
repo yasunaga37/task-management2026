@@ -61,7 +61,7 @@
 								</c:forEach>
 						</select></td>
 						<th scope="row">期限</th>
-						<td><fmt:formatDate value="${task.limitDate}" pattern="yyyy年MM月dd日  (EE)" /></td>
+						<td><input type="date" name="limit_date" value="${task.limitDate}"></td>
 					</tr>
 					<tr>
 						<th scope="row">メモ</th>
@@ -77,39 +77,40 @@
 			</table>
 			<div class="d-flex justify-content-center">
 				<a href="task-detail?task_id=${task.id}" class="btn btn-secondary me-5">戻る</a> 
-				<input type="hidden" name="task_id" value="${task.id}">
-<!-- 				<button type="submit" class="btn btn-primary me-5" name="action" value="execute_edit">編集</button> -->
-				<a class="btn btn-primary me-5" data-bs-toggle="modal" 	data-bs-target="#myModal" href="#">編集</a>
-<!-- 				<a class="navbar-brand" data-bs-toggle="modal" 	data-bs-target="#myModal" href="#">タスク管理システム</a> -->
-				
-				
+				<input type="hidden" name="task_id" value="${task.id}"> 
+				<a class="btn btn-primary me-5" data-bs-toggle="modal" data-bs-target="#myModal" href="#">編集</a>
 			</div>
 
 			<!-- Modal -->
 			<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
-					<!-- 			<form id="modalForm" action="index.html" method="get"> -->
 					<div class="modal-content">
 						<div class="modal-header">
-							<!-- 						<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 
-						<div class="modal-body">
-							この内容で編集してもよろしいですか？
-							<!-- 							<input type="hidden" class="form-control"  name="action" value="logout"> -->
-						</div>
+						<div class="modal-body">この内容で編集してもよろしいですか？</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 							<input type="hidden" name="task_id" value="${task.id}">
 							<button type="submit" class="btn btn-primary" name="action" value="execute_edit">編集</button>
 						</div>
 					</div>
-					<!-- 			</form> -->
 				</div>
 			</div>
 		</form>
 
+		<script type="text/javascript">
+			window.onload = function() {
+				var today = new Date();
+				today.setDate(today.getDate());
+				var yyyy = today.getFullYear();
+				var mm = ("0" + (today.getMonth() + 1)).slice(-2);
+				var dd = ("0" + today.getDate()).slice(-2);
+				document.getElementById("today").value = yyyy + '-' + mm + '-'
+						+ dd;
+			}
+		</script>
 
 	</c:param>
 </c:import>

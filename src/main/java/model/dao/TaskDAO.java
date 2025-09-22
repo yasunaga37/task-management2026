@@ -16,7 +16,7 @@ public class TaskDAO {
 
 	/**
 	 * タスクリストページ表示用の全タスクリストを取得する
-	 * @return List<Task>
+	 * @return List<Task> 全タスク情報のリスト
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
@@ -68,8 +68,8 @@ public class TaskDAO {
 	}
 
 	/**
-	 * タスクリストページ表示用の全タスクリストを取得する
-	 * @return List<Task>
+	 * タスクリストページ表示用のユーザー別タスクリストを取得する
+	 * @return List<Task> 指定されたユーザーIDの全タスク情報リスト
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
@@ -394,6 +394,40 @@ public class TaskDAO {
 			}
 		}
 		return task;		
+	}
+	
+	/**
+	 * 更新用データを受け取ってタスク情報の更新処理を行う。
+	 * @param task
+	 * @return int count
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public int updateTask(Task task) throws ClassNotFoundException, SQLException {
+		int count = 0;
+		String sql = "UPDATE t_task "
+				+ "SET task_name=?,"
+				+ "	category_id=?,"
+				+ "	limit_date=?,"
+				+ "	user_id=?,"
+				+ "	status_code=?,"
+				+ "	memo=?,"
+				+ "	delete_flag=? "
+				+ "WHERE task_id=?;";
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setString(1, task.getName());
+			pstmt.setInt(2, task.getCatagoryId());
+			pstmt.setDate(3, task.getLimitDate());
+			pstmt.setString(4, task.getUserId());
+			pstmt.setString(5, task.getStatusCode());
+			pstmt.setString(6, task.getMemo());
+			pstmt.setString(7, task.getDeleteFlag());
+			pstmt.setInt(8, task.getId());
+			count = pstmt.executeUpdate();
+		}
+//		System.out.println("count=" + count);
+		return count;
 	}
 
 }
