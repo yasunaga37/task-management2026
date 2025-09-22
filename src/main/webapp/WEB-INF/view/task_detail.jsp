@@ -10,6 +10,16 @@
 
 			<%-- 1列目 --%>
 			<div class="col bg-success p-1 text-dark bg-opacity-10 m-1">
+
+				<%-- requestスコープに "successMessage" が存在する場合のみ、アラートを表示する --%>
+				<c:if test="${not empty successMessage}">
+					<div id="success" class="alert alert-success alert-dismissible fade show text-center" role="alert">
+						<c:out value="${successMessage}" />
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				</c:if>
+				<%-- requestスコープに "successMessage" が存在する場合のみ、アラートを表示する 終わり --%>
+				
 				<form action="task-detail" method="post">
 					<table class="table table-striped  table-bordered  table-layout-fixed">
 						<thead class="table-active">
@@ -39,7 +49,7 @@
 							</tr>
 							<tr>
 								<th scope="row">メモ</th>
-								<td colspan="3"><c:out value="${task.memo}" /></td>
+								<td colspan="3" class="text-start" style="white-space: pre-wrap;"><c:out value="${task.memo}" /></td>
 							</tr>
 							<tr>
 								<th scope="row">登録日</th>
@@ -53,7 +63,7 @@
 					</table>
 
 					<div class="d-flex justify-content-center">
-					<input type="hidden" name="task_id" value="${task.id}">
+						<input type="hidden" name="task_id" value="${task.id}">
 						<button type="submit" class="btn btn-primary me-5" name="action" value="task_edit">編集</button>
 						<button type="submit" class="btn btn-danger" name="action" value="task_delete">削除</button>
 					</div>
