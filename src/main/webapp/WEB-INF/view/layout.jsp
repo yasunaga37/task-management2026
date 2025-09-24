@@ -55,6 +55,7 @@
 						</ul></li>
 
 					<li class="nav-item"><a class="nav-link disabled">新規タスク登録</a></li>
+					
 					<c:if test="${login_user != null }">
 						<li class="nav-item"><a class="nav-link active"><c:out value="${ login_user.name}" /></a></li>
 					</c:if>
