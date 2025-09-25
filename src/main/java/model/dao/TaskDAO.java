@@ -449,5 +449,52 @@ public class TaskDAO {
 		} 
 		return count;		
 	}
+	
+	/**
+	 * task_idフィールドの最大値を取得する
+	 * @return int 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public int getMaxId() throws ClassNotFoundException, SQLException {
+		int max = 0;
+		String sql = "SELECT MAX(task_id) FROM t_task";
+		try (Connection con = ConnectionManager.getConnection();
+				Statement stmt = con.createStatement()) {
+			ResultSet res = stmt.executeQuery(sql);
+			if (res.next()) {
+				max = res.getInt("MAX(task_id)");
+			}
+		} 
+//		System.out.println("max=" + max);
+		return max;	
+	}
+	
+	/**
+	 * 引数として渡された新規タスクをDBに登録する。
+	 * @param task
+	 * @return int 処理したレコード件数
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public int insertTask(Task task) throws ClassNotFoundException, SQLException {
+		int count = 0;
+		String sql = "INSERT INTO t_task"
+				+ " (task_name, category_id, limit_date, user_id, status_code, memo, delete_flag)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setString(1, task.getName());
+			pstmt.setInt(2, task.getCatagoryId());
+			pstmt.setDate(3, task.getLimitDate());
+			pstmt.setString(4, task.getUserId());
+			pstmt.setString(5, task.getStatusCode());
+			pstmt.setString(6, task.getMemo());
+			pstmt.setString(7, task.getDeleteFlag());
+			count = pstmt.executeUpdate();
+		} 
+//		System.out.println("count:" + count);
+		return count;		
+	}
 
 }

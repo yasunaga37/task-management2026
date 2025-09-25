@@ -5,25 +5,20 @@
 
 <c:import url="layout.jsp">
 	<c:param name="content">
+	<h6 class="text-center">新規タスク登録</h6>
 
 		<%-- 	${fn:length(category_list) } --%>
-		<form action="task-edit" method="post">
+		<form action="task-insert" method="post">
 			<table class="table table-striped  table-bordered  table-layout-fixed">
 				<thead class="table-active">
 					<tr>
 						<th scope="col" style="width: 90px;">タスクID</th>
-						<th scope="col" style="width: 300px;"><c:out value="${task.id}" /></th>
+						<th scope="col" style="width: 300px;"><c:out value="${task_id}" /></th>
 						<th scope="col" style="width: 90px;">カテゴリ</th>
 						<th scope="col" style="width: 300px;"><select name="category">
+								<option value="" selected="selected" disabled>選択してください</option>
 								<c:forEach var="category" items="${category_list}">
-									<c:choose>
-										<c:when test="${task.categoryName == category.name }">
-											<option value="${category.id }" selected="selected"><c:out value="${category.name }" /></option>
-										</c:when>
-										<c:otherwise>
-											<option value="${category.id }"><c:out value="${category.name }" /></option>
-										</c:otherwise>
-									</c:choose>
+									<option value="${category.id }"><c:out value="${category.name }" /></option>
 								</c:forEach>
 						</select></th>
 					</tr>
@@ -31,12 +26,12 @@
 				<tbody>
 					<tr>
 						<th scope="row">内容</th>
-						<td><input type="text" name="task_name" value="${task.name}" class="w-100"></td>
+						<td><input type="text" name="task_name" class="w-100"></td>
 						<th scope="row">担当者</th>
 						<td><select name="user">
 								<c:forEach var="user" items="${user_list}">
 									<c:choose>
-										<c:when test="${task.userName == user.name }">
+										<c:when test="${login_user.name == user.name }">
 											<option value="${user.id }" selected="selected"><c:out value="${user.name }" /></option>
 										</c:when>
 										<c:otherwise>
@@ -50,14 +45,15 @@
 						<th scope="row">状況</th>
 						<td><select name="status">
 								<c:forEach var="status" items="${status_list}">
-									<c:choose>
+									<option value="${status.code}"><c:out value="${status.name}" /></option>
+<%-- 									<c:choose>
 										<c:when test="${task.statusName == status.name }">
 											<option value="${status.code}" selected="selected"><c:out value="${status.name}" /></option>
 										</c:when>
 										<c:otherwise>
 											<option value="${status.code}"><c:out value="${status.name}" /></option>
 										</c:otherwise>
-									</c:choose>
+									</c:choose> --%>
 								</c:forEach>
 						</select></td>
 						<th scope="row">期限</th>
@@ -69,16 +65,16 @@
 					</tr>
 					<tr>
 						<th scope="row">登録日</th>
-						<td><fmt:formatDate value="${task.createDatetime}" pattern="yyyy年MM月dd日  (EE)" /></td>
-						<th scope="row">更新日</th>
-						<td><fmt:formatDate value="${task.updateDatetime}" pattern="yyyy年MM月dd日  (EE)" /></td>
+						<td><fmt:formatDate value="${today}" pattern="yyyy年MM月dd日  (EE)" /></td>
+<%-- 						<th scope="row">更新日</th>
+						<td><fmt:formatDate value="${task.updateDatetime}" pattern="yyyy年MM月dd日  (EE)" /></td> --%>
 					</tr>
 				</tbody>
 			</table>
 			<div class="d-flex justify-content-center">
-				<a href="task-detail?task_id=${task.id}" class="btn btn-secondary me-5">戻る</a> 
-				<input type="hidden" name="task_id" value="${task.id}"> 
-				<a class="btn btn-primary me-5" data-bs-toggle="modal" data-bs-target="#myModal" href="#">編集</a>
+				<input class="btn btn-secondary me-5"" type="reset" value="Reset">
+				<input type="hidden" name="task_id" value="${task_id}"> 
+				<a class="btn btn-primary me-5" data-bs-toggle="modal" data-bs-target="#myModal" href="#">作成</a>
 			</div>
 
 			<!-- Modal -->
@@ -89,18 +85,19 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 
-						<div class="modal-body">この内容で編集してもよろしいですか？</div>
+						<div class="modal-body">この内容で作成してもよろしいですか？</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<input type="hidden" name="task_id" value="${task.id}">
-							<button type="submit" class="btn btn-primary" name="action" value="execute_edit">編集</button>
+							<input type="hidden" name="task_id" value="${task_id}">
+							<input type="hidden" name="today" value="${today}">
+							<button type="submit" class="btn btn-primary" name="action" value="execute_insert">作成</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</form>
 
-		<script type="text/javascript">
+<!-- 		<script type="text/javascript">
 			window.onload = function() {
 				var today = new Date();
 				today.setDate(today.getDate());
@@ -110,7 +107,7 @@
 				document.getElementById("today").value = yyyy + '-' + mm + '-'
 						+ dd;
 			}
-		</script>
+		</script> -->
 
 	</c:param>
 </c:import>
